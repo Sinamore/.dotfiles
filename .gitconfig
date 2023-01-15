@@ -1,0 +1,20 @@
+[user]
+	name = Roman Baev
+	email = skultaurora@gmail.com
+
+[core]
+  editor = nvim
+  pager = delta --diff-so-fancy | less --tabs=4 -RF -+X
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    line-numbers = true
+    navigate = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
