@@ -1,5 +1,5 @@
 local servers = {
-  "clangd",
+	"clangd",
 	"sumneko_lua",
 	-- "cssls",
 	-- "html",
@@ -51,3 +51,10 @@ for _, server in pairs(servers) do
 
 	lspconfig[server].setup(opts)
 end
+-- lspconfig["clangd"].setup(
+-- 	{
+-- 		on_attach = require("user.lsp.handlers").on_attach,
+-- 		capabilities = require("user.lsp.handlers").capabilities,
+-- 		
+-- 	}
+-- )

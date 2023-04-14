@@ -122,61 +122,78 @@ fi
 #     echo "$(echo "$1" | sed 's|\/*$||g')"
 # }
 
-# Self-made backup
-global_backup_dir=/home/skult/backups/
+function rcrt() {
+  rm -r $1
+  mkdir $1
+}
 
-function backup() {
-  local backup_globally=false;
-  while [[ $# -gt 0 ]]; do
-    local arg="$1"; shift
-    case "$arg" in
-      "-g")
-
-          local backup_globally=true
-          ;;
-      "-d")
-          local backup_dir="$1"
-          shift
-          ;;
-      *)
-          local src="$arg"
-          ;;
-    esac
-  done
-
-  cp_cmd="cp"
-  if [ -d "$src" ];
-  then
-    src="$src/"
-    cp_cmd="$cp_cmd -r"
-  fi
-
-  # if need to backup to global backup dir
-  if [ "$backup_globally" = true ];
-  then
-    if [ ! -d "$global_backup_dir" ];
-    then
-      mkdir -p "$global_backup_dir"
-    fi
-    $cp_cmd "$src" "$global_backup_dir"/"$(basename "$src").backup_$(date +%Y-%m-%d-%T)"
-  fi
-
-  # if backup dir is specified
-  if [[ -v backup_dir ]];
-  then
-    if [ ! -d "$backup_dir" ];
-    then
-      mkdir -p "$backup_dir"
-    fi
-    $cp_cmd "$src" "$backup_dir"/"$(basename "$src").backup_$(date +%Y-%m-%d-%T)"
-  fi
-
-  # # if neither of options is specified -- place backup next to source
-  if [[ "$backup_globally" = false && ! -v $backup_dir ]];
-  then
-    $cp_cmd "$src" "$src".backup_"$(date +%Y-%m-%d-%T)"
+function rgl() {
+  # if 1 arg => rg ... -t cpp $1 | less
+  # if more than 1 arg => rg ... <args>
+  if [[ $# -eq 1 ]]; then
+    # rg --smart-case --color always --line-number -t cpp "$1" | less -r
+    rg --smart-case --color always --line-number -t cpp "$1" | batcat
+  else
+    # rg --smart-case --color always --line-number "$@" | less -r
+    rg --smart-case --color always --line-number "$@" | batcat
   fi
 }
+
+# Self-made backup
+# global_backup_dir=/home/skult/backups/
+#
+# function backup() {
+#   local backup_globally=false;
+#   while [[ $# -gt 0 ]]; do
+#     local arg="$1"; shift
+#     case "$arg" in
+#       "-g")
+#
+#           local backup_globally=true
+#           ;;
+#       "-d")
+#           local backup_dir="$1"
+#           shift
+#           ;;
+#       *)
+#           local src="$arg"
+#           ;;
+#     esac
+#   done
+#
+#   cp_cmd="cp"
+#   if [ -d "$src" ];
+#   then
+#     src="$src/"
+#     cp_cmd="$cp_cmd -r"
+#   fi
+#
+#   # if need to backup to global backup dir
+#   if [ "$backup_globally" = true ];
+#   then
+#     if [ ! -d "$global_backup_dir" ];
+#     then
+#       mkdir -p "$global_backup_dir"
+#     fi
+#     $cp_cmd "$src" "$global_backup_dir"/"$(basename "$src").backup_$(date +%Y-%m-%d-%T)"
+#   fi
+#
+#   # if backup dir is specified
+#   if [[ -v backup_dir ]];
+#   then
+#     if [ ! -d "$backup_dir" ];
+#     then
+#       mkdir -p "$backup_dir"
+#     fi
+#     $cp_cmd "$src" "$backup_dir"/"$(basename "$src").backup_$(date +%Y-%m-%d-%T)"
+#   fi
+#
+#   # # if neither of options is specified -- place backup next to source
+#   if [[ "$backup_globally" = false && ! -v $backup_dir ]];
+#   then
+#     $cp_cmd "$src" "$src".backup_"$(date +%Y-%m-%d-%T)"
+#   fi
+# }
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 

@@ -1,6 +1,6 @@
 [user]
 	name = Roman Baev
-	email = skultaurora@gmail.com
+	email = roman.baev@paradoxinteractive.com
 
 [core]
   editor = nvim
@@ -18,3 +18,10 @@
 
 [diff]
     colorMoved = default
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[alias]
+	logsh = log --pretty=oneline -n

@@ -1,14 +1,14 @@
 local options = {
     breakindent = true,
-    expandtab = true,
+    expandtab = false,
     ignorecase = true,
     linebreak = true,
     number = true,
-    shiftwidth = 2,
-    showtabline = 2,
+    shiftwidth = 4,
+    showtabline = 4,
     smartindent = true,
     smarttab = true,
-    tabstop = 2,
+    tabstop = 4,
 }
 
 for k, v in pairs(options) do
